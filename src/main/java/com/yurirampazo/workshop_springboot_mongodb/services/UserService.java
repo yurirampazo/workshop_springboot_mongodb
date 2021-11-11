@@ -3,12 +3,12 @@ package com.yurirampazo.workshop_springboot_mongodb.services;
 import com.yurirampazo.workshop_springboot_mongodb.domain.User;
 import com.yurirampazo.workshop_springboot_mongodb.domain.dto.UserDto;
 import com.yurirampazo.workshop_springboot_mongodb.repository.UserRepository;
-import java.util.List;
-import java.util.Optional;
-
 import com.yurirampazo.workshop_springboot_mongodb.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Service witch comunicates with UserRepository.
@@ -35,6 +35,18 @@ public class UserService {
   public void delete(String id) {
     findById(id);
     userRepository.deleteById(id);
+  }
+
+  public User update (User user) {
+    User newUser = findById(user.getId());
+    updateData(newUser, user);
+    return userRepository.save(newUser);
+  }
+
+  private void updateData(User newUser, User user) {
+    newUser.setId(user.getId());
+    newUser.setEmail(user.getEmail());
+    newUser.setName(user.getName());
   }
 
   public User fromDto(UserDto userDto) {
