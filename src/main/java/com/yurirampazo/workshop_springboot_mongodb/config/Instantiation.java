@@ -2,6 +2,8 @@ package com.yurirampazo.workshop_springboot_mongodb.config;
 
 import com.yurirampazo.workshop_springboot_mongodb.domain.Post;
 import com.yurirampazo.workshop_springboot_mongodb.domain.User;
+import com.yurirampazo.workshop_springboot_mongodb.domain.dto.AuthorDto;
+import com.yurirampazo.workshop_springboot_mongodb.domain.dto.UserDto;
 import com.yurirampazo.workshop_springboot_mongodb.repository.PostRepository;
 import com.yurirampazo.workshop_springboot_mongodb.repository.UserRepository;
 
@@ -36,13 +38,12 @@ public class Instantiation implements CommandLineRunner {
     User maria = new User(null, "Maria Brown", "maria@gmail.com");
     User alex = new User(null, "Alex Green", "alex@gmail.com");
     User bob = new User(null, "Bob Grey", "bob@gmail.com");
+    userRepository.saveAll(Arrays.asList(maria, alex, bob));
 
     Post post1 = new Post(null, sdf.parse("21/03/2018"),
-          "Partiu viagem!!!","Vou viajar para São Paulo. Abraços!", maria);
+          "Partiu viagem!!!","Vou viajar para São Paulo. Abraços!", new AuthorDto(maria));
     Post post2 = new Post(null, sdf.parse("22/03/2018"),
-          "Bom dia!","Acordei feliz hoje!", alex);
-
-    userRepository.saveAll(Arrays.asList(maria, alex, bob));
+          "Bom dia!","Acordei feliz hoje!", new AuthorDto(alex));
     postRepository.saveAll(Arrays.asList(post1,post2));
   }
 }
