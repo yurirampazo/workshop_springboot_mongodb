@@ -19,7 +19,7 @@ public class PostService {
   @Autowired
   private PostRepository repository;
 
-  public List<Post> findAll () {
+  public List<Post> findAll() {
     return repository.findAll();
   }
 
@@ -28,4 +28,7 @@ public class PostService {
     return post.orElseThrow(() -> new ObjectNotFoundException("Post não encontrado."));
   }
 
+  public List<Post> findByTitle(String text) {
+    return repository.searchTitle(text);
+  }
 }
