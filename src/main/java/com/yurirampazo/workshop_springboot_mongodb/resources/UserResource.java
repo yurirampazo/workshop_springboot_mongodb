@@ -1,5 +1,6 @@
 package com.yurirampazo.workshop_springboot_mongodb.resources;
 
+import com.yurirampazo.workshop_springboot_mongodb.domain.Post;
 import com.yurirampazo.workshop_springboot_mongodb.domain.User;
 import com.yurirampazo.workshop_springboot_mongodb.domain.dto.UserDto;
 import com.yurirampazo.workshop_springboot_mongodb.services.UserService;
@@ -59,5 +60,11 @@ public class UserResource {
     user.setId(id);
     user = userService.update(user);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping(value = "/{id}/posts")
+  public ResponseEntity<List<Post>> findPostsByUser(@PathVariable String id) {
+    User user = userService.findById(id);
+    return ResponseEntity.ok().body(user.getPosts());
   }
 }
