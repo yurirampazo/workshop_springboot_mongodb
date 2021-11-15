@@ -3,6 +3,7 @@ package com.yurirampazo.workshop_springboot_mongodb.config;
 import com.yurirampazo.workshop_springboot_mongodb.domain.Post;
 import com.yurirampazo.workshop_springboot_mongodb.domain.User;
 import com.yurirampazo.workshop_springboot_mongodb.domain.dto.AuthorDto;
+import com.yurirampazo.workshop_springboot_mongodb.domain.dto.CommentDto;
 import com.yurirampazo.workshop_springboot_mongodb.domain.dto.UserDto;
 import com.yurirampazo.workshop_springboot_mongodb.repository.PostRepository;
 import com.yurirampazo.workshop_springboot_mongodb.repository.UserRepository;
@@ -44,8 +45,16 @@ public class Instantiation implements CommandLineRunner {
           "Partiu viagem!!!","Vou viajar para São Paulo. Abraços!", new AuthorDto(maria));
     Post post2 = new Post(null, sdf.parse("22/03/2018"),
           "Bom dia!","Acordei feliz hoje!", new AuthorDto(alex));
-    postRepository.saveAll(Arrays.asList(post1,post2));
 
+    CommentDto c1 = new CommentDto("Boa viagem mano", sdf.parse("21/03/2021"), new AuthorDto(alex));
+    CommentDto c2 = new CommentDto("Aproveite", sdf.parse("22/03/2021"), new AuthorDto(bob));
+    CommentDto c3 = new CommentDto("Tenha um ótimo dia.", sdf.parse("23/03/2021"), new AuthorDto(alex));
+
+    post1.getComments().addAll(Arrays.asList(c1,c2));
+    post2.getComments().add(c3);
+
+    postRepository.saveAll(Arrays.asList(post1,post2));
+    
     maria.getPosts().addAll(Arrays.asList(post1,post2));
     userRepository.save(maria);
   }
