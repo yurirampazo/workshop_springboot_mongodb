@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,9 +37,21 @@ public class PostResource {
   }
 
   @GetMapping(value = "/titlesearch")
-  public ResponseEntity<List<Post>> FindByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
+  public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
     text = Url.decodeParameters(text);
     List<Post> posts = service.findByTitle(text);
+    return ResponseEntity.ok().body(posts);
+  }
+
+  @GetMapping(value = "/fullsearch")
+  public ResponseEntity<List<Post>> fullSearch(
+        @RequestParam(value = "text", defaultValue = "") String text,
+        @RequestParam(value = "minDate", defaultValue = "") String minDate,
+        @RequestParam(value = "maxDate", defaultValue = "") String maxDate) {
+    text = Url.decodeParameters(text);
+    Date min = Url.comvertDate(minDate, new Date(0L));
+    Date max = Url.comvertDate(maxDate, new Date());
+    List<Post> posts = service.fullSearch(text, min, max);
     return ResponseEntity.ok().body(posts);
   }
 }
